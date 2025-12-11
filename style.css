@@ -1,0 +1,50 @@
+/* GLOBAL SETTINGS */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&family=Inter:wght@300;400;600;800&display=swap');
+
+.stApp {
+    background-color: #050505;
+    background-image: radial-gradient(circle at 50% 50%, #111111 0%, #000000 100%);
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+}
+
+/* SIDEBAR */
+[data-testid="stSidebar"] {
+    background-color: #0a0a0a;
+    border-right: 1px solid #222;
+}
+
+/* CARDS */
+.metric-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+.metric-card:hover {
+    transform: translateY(-5px);
+    border-color: #007bff;
+    box-shadow: 0 10px 30px rgba(0, 123, 255, 0.15);
+}
+
+/* TEXT STYLES */
+h1, h2, h3 { font-family: 'Inter', sans-serif; letter-spacing: -0.5px; }
+.kpi-val { font-size: 2.2rem; font-weight: 800; color: #fff; margin: 10px 0; }
+.kpi-lbl { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+
+/* BUTTONS */
+div.stButton > button {
+    background: linear-gradient(135deg, #0061f2 0%, #00c6f9 100%);
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+div.stButton > button:hover {
+    box-shadow: 0 0 15px rgba(0, 198, 249, 0.6);
+    transform: scale(1.02);
+}
