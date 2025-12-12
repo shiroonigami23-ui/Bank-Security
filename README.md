@@ -5,7 +5,7 @@
 ![Framework](https://img.shields.io/badge/Streamlit-Enterprise-red?style=for-the-badge&logo=streamlit)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-[![Live Demo](https://img.shields.io/badge/🔴_Live_App_Demo-Click_Here-red?style=for-the-badge)](https://kuks-bank-security.streamlit.app)
+[![Live Demo](https://img.shields.io/badge/🔴_Live_App_Demo-Click_Here-red?style=for-the-badge)](https://kaks-bank-security.streamlit.app)
 
 *FinGuard Enterprise* is a state-of-the-art anomaly detection system designed for high-frequency banking environments. Leveraging *XGBoost* with *SMOTE* balancing, it detects fraudulent transactions with *99.94% accuracy* in under 15ms.
 
