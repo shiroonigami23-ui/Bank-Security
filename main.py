@@ -25,17 +25,27 @@ if not st.session_state.logged_in:
         st.markdown("<br><br><br>", unsafe_allow_html=True)
         st.title("🛡 FinGuard Access")
         st.markdown("Enter secure credentials to access the banking mainframe.")
-        user = st.text_input("Username", placeholder="admin")
-        pwd = st.text_input("Password", type="password", placeholder="admin")
+        
+        CREDENTIALS = {
+            "Khushee": "butterfly",
+            "Kunal": "cheetah",
+            "Aryan": "smooth",
+            "Shiro": "oni",
+            "Admin": "admin" 
+        }
+        
+        user = st.text_input("Username", placeholder="Enter ID")
+        pwd = st.text_input("Password", type="password", placeholder="Enter Password")
         
         if st.button("Authenticate"):
-            if user == "admin" and pwd == "admin":
-                with st.spinner("Establishing Secure Handshake..."):
-                    time.sleep(1.5)
+            # Check if user exists AND if password matches
+            if user in CREDENTIALS and CREDENTIALS[user] == pwd:
+                with st.spinner(f"Verifying Identity: {user.upper()}..."):
+                    time.sleep(1.0)
                 st.session_state.logged_in = True
                 st.rerun()
             else:
-                st.error("Access Denied.")
+                st.error("❌ Access Denied: Invalid Credentials")
     st.stop()
 
 # --- MAIN DASHBOARD ---
