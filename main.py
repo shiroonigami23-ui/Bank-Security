@@ -10,7 +10,7 @@ import json
 from collections import defaultdict
 from modules.data_loader import load_model, load_data
 from modules.ui_components import kpi_card, header_animation, timeline_chart, radar_chart
-from modules.pdf_generator import create_download_link, generate_fraud_report
+from modules.pdf_generator import create_download_link
 from modules.risk_calculator import calculate_risk_score
 
 # --- PAGE CONFIG ---
@@ -122,6 +122,27 @@ st.markdown("""
     /* Progress Bar Custom */
     .stProgress > div > div > div {
         background: linear-gradient(90deg, #00ff88, #00ccff);
+    }
+    
+    /* PDF Download Button Style */
+    .pdf-download-btn {
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        display: inline-block;
+        margin: 10px 0;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .pdf-download-btn:hover {
+        background: linear-gradient(45deg, #c0392b, #a93226);
+        transform: scale(1.05);
+        box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -323,12 +344,12 @@ if menu_options[menu] == "Live Scanner":
                     
                     # Prediction
                     pred = model.predict(features)[0]
-                    prob = model.predict_proba(features)[0][1]
+                    prob = model.predict_proba(features)[0][1] * 100
                     
                     # Calculate risk score
                     risk_score = calculate_risk_score(
                         amount=tx_amount,
-                        probability=prob,
+                        probability=prob/100,
                         country=tx_country,
                         velocity=tx_velocity
                     )
@@ -365,19 +386,14 @@ if menu_options[menu] == "Live Scanner":
                         **Transaction ID:** {tx_id}  
                         **Amount:** €{tx_amount:,.2f}  
                         **Risk Score:** {risk_score:.2%}  
-                        **Probability:** {prob*100:.2f}%  
+                        **Probability:** {prob:.2f}%  
                         **Action:** ❌ BLOCKED
                         """)
                         
-                        # Generate Report
-                        with st.expander("📋 Generate Forensic Report"):
-                            report = generate_fraud_report(tx_id, tx_amount, risk_score, features.iloc[0].to_dict())
-                            st.download_button(
-                                label="📥 Download Full Report",
-                                data=report,
-                                file_name=f"fraud_report_{tx_id}.pdf",
-                                mime="application/pdf"
-                            )
+                        # Generate PDF Report using your existing function
+                        with st.expander("📋 Generate Forensic Report", expanded=True):
+                            st.markdown(create_download_link(tx_id, f"{risk_score*100:.1f}", tx_amount, "HIGH RISK - BLOCKED"), 
+                                      unsafe_allow_html=True)
                             
                     else:
                         success_msg = f"✅ APPROVED: ID {tx_id} | €{tx_amount:,.2f} | Score: {risk_score:.2%}"
@@ -388,9 +404,14 @@ if menu_options[menu] == "Live Scanner":
                         **Transaction ID:** {tx_id}  
                         **Amount:** €{tx_amount:,.2f}  
                         **Risk Score:** {risk_score:.2%}  
-                        **Probability:** {prob*100:.4f}%  
+                        **Probability:** {prob:.4f}%  
                         **Action:** ✓ APPROVED
                         """)
+                        
+                        # Generate safe transaction report
+                        with st.expander("📋 Generate Transaction Report", expanded=False):
+                            st.markdown(create_download_link(tx_id, f"{risk_score*100:.1f}", tx_amount, "SAFE - APPROVED"), 
+                                      unsafe_allow_html=True)
         
         # Recent Transactions
         st.subheader("📋 Recent Activity")
@@ -409,6 +430,8 @@ if menu_options[menu] == "Live Scanner":
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
+        else:
+            st.info("No transactions processed yet. Click 'Process Transaction' to begin.")
     
     with col_graph:
         st.subheader("🧠 Deep Learning Vector Space")
@@ -500,8 +523,19 @@ elif menu_options[menu] == "Forensics Dashboard":
             </div>
             """, unsafe_allow_html=True)
         
-        if st.button("📥 Export All Alerts", use_container_width=True):
-            st.success("Alert data exported successfully!")
+        # Generate PDF for all alerts
+        if st.button("📥 Export All Alerts as PDF", use_container_width=True):
+            # Create a summary PDF
+            combined_id = f"ALERT-SUMMARY-{datetime.now().strftime('%Y%m%d')}"
+            total_amount = sum([12450, 8900, 23100, 5600])
+            avg_score = np.mean([0.98, 0.87, 0.92, 0.76])
+            
+            st.markdown(create_download_link(
+                combined_id, 
+                f"{avg_score*100:.1f}", 
+                total_amount, 
+                "ALERT SUMMARY"
+            ), unsafe_allow_html=True)
     
     with col_map:
         st.subheader("🌍 Global Risk Heatmap")
@@ -675,6 +709,19 @@ elif menu_options[menu] == "Network Explorer":
         st.markdown("**Anomaly Detection**")
         st.markdown(f"High-risk nodes: `{len(anomaly_nodes_list)}`")
         st.markdown(f"Risk score: `{(len(anomaly_nodes_list)/num_nodes):.1%}`")
+    
+    # Export Network Report
+    st.subheader("📤 Export Network Analysis")
+    if st.button("📄 Generate Network Report PDF", use_container_width=True):
+        network_id = f"NETWORK-{datetime.now().strftime('%H%M%S')}"
+        risk_score = len(anomaly_nodes_list) / num_nodes
+        
+        st.markdown(create_download_link(
+            network_id,
+            f"{risk_score*100:.1f}",
+            num_nodes * 100,  # Simulated value
+            "NETWORK ANALYSIS"
+        ), unsafe_allow_html=True)
 
 # --- MODULE 4: ANALYTICS HUB (New) ---
 elif menu_options[menu] == "Analytics Hub":
@@ -767,6 +814,19 @@ elif menu_options[menu] == "Analytics Hub":
     )
     
     st.plotly_chart(fig3, use_container_width=True)
+    
+    # Export Analytics Report
+    st.subheader("📤 Export Analytics Report")
+    if st.button("📄 Generate Analytics Report PDF", use_container_width=True):
+        report_id = f"ANALYTICS-{datetime.now().strftime('%Y%m%d')}"
+        avg_fraud_rate = analytics_data['Fraud_Rate'].mean()
+        
+        st.markdown(create_download_link(
+            report_id,
+            f"{avg_fraud_rate:.1f}",
+            analytics_data['Total_Transactions'].sum(),
+            "ANALYTICS REPORT"
+        ), unsafe_allow_html=True)
 
 # --- MODULE 5: AUDIT LOG (Enhanced) ---
 elif menu_options[menu] == "Audit Log":
@@ -850,7 +910,8 @@ elif menu_options[menu] == "Audit Log":
         st.subheader("📤 Export Options")
         col_exp1, col_exp2, col_exp3 = st.columns(3)
         with col_exp1:
-            if st.button("📄 Export as CSV", use_container_width=True):
+            # CSV Export
+            if st.session_state.audit_log:
                 log_df = pd.DataFrame({
                     'timestamp': [datetime.now() - timedelta(minutes=i*5) for i in range(len(st.session_state.audit_log))],
                     'message': st.session_state.audit_log,
@@ -858,14 +919,26 @@ elif menu_options[menu] == "Audit Log":
                 })
                 csv = log_df.to_csv(index=False)
                 st.download_button(
-                    label="Download CSV",
+                    label="📄 Export as CSV",
                     data=csv,
                     file_name="audit_logs.csv",
-                    mime="text/csv"
+                    mime="text/csv",
+                    use_container_width=True
                 )
+        
         with col_exp2:
-            if st.button("📊 Generate Report", use_container_width=True):
-                st.info("Report generation in progress...")
+            # PDF Export
+            if st.button("📊 Generate PDF Report", use_container_width=True):
+                report_id = f"AUDIT-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+                fraud_rate = (fraud_count / len(st.session_state.audit_log)) * 100 if st.session_state.audit_log else 0
+                
+                st.markdown(create_download_link(
+                    report_id,
+                    f"{fraud_rate:.1f}",
+                    len(st.session_state.audit_log),
+                    "AUDIT LOG SUMMARY"
+                ), unsafe_allow_html=True)
+        
         with col_exp3:
             if st.button("🗑️ Clear Logs", use_container_width=True, type="secondary"):
                 st.session_state.audit_log = []
@@ -899,6 +972,15 @@ elif menu_options[menu] == "System Config":
         
         if st.button("💾 Save Security Settings", type="primary"):
             st.success("Security settings updated successfully!")
+            
+            # Generate configuration report
+            config_id = f"CONFIG-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+            st.markdown(create_download_link(
+                config_id,
+                "100.0",  # Config is always 100% complete
+                1,  # Dummy value
+                "SYSTEM CONFIGURATION"
+            ), unsafe_allow_html=True)
     
     with tab2:
         st.subheader("Model Configuration")
