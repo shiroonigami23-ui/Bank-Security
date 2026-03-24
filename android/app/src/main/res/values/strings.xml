@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FinGuard Mobile</string>
-    <string name="error_loading">Unable to load FinGuard. Check your internet connection.</string>
-    <string name="retry">Retry</string>
+    <string name="app_title">FinGuard Mobile Offline Engine</string>
+    <string name="app_subtitle">Independent APK scanner. No Streamlit dependency required.</string>
+    <string name="hint_amount">Amount (EUR)</string>
+    <string name="hint_probability">Model Probability (%)</string>
+    <string name="hint_country">Country Code (e.g. RU)</string>
+    <string name="analyze">Analyze</string>
+    <string name="simulate_case">Simulate</string>
+    <string name="result_placeholder">Result will appear here after analysis.</string>
+    <string name="validation_error">Please fill amount, probability, and country fields.</string>
+    <string-array name="velocity_levels">
+        <item>Normal</item>
+        <item>High</item>
+        <item>Extreme</item>
+    </string-array>
 </resources>
