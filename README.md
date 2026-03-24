@@ -1,61 +1,72 @@
-# 🛡 FinGuard Enterprise | AI-Driven Financial Fraud Detection
+# FinGuard Enterprise - Bank Security
 
-![Version](https://img.shields.io/badge/Version-3.0.0-blue?style=for-the-badge)
-![Python](https://img.shields.io/badge/Python-3.10-yellow?style=for-the-badge&logo=python)
-![Framework](https://img.shields.io/badge/Streamlit-Enterprise-red?style=for-the-badge&logo=streamlit)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-4.0.0-blue?style=for-the-badge)
+![Python](https://img.shields.io/badge/python-3.10+-yellow?style=for-the-badge&logo=python)
+![Android](https://img.shields.io/badge/android-apk-success?style=for-the-badge&logo=android)
+![Streamlit](https://img.shields.io/badge/streamlit-live-red?style=for-the-badge&logo=streamlit)
+![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
-[![Live Demo](https://img.shields.io/badge/🔴_Live_App_Demo-Click_Here-red?style=for-the-badge)](https://kaks-bank-security.streamlit.app)
+[![Live App](https://img.shields.io/badge/Live%20Demo-kaks--bank--security.streamlit.app-red?style=for-the-badge)](https://kaks-bank-security.streamlit.app)
+[![Download APK](https://img.shields.io/badge/Download-APK-3ddc84?style=for-the-badge&logo=android)](https://github.com/shiroonigami23-ui/Bank-Security/releases/latest/download/finguard-mobile.apk)
 
-*FinGuard Enterprise* is a state-of-the-art anomaly detection system designed for high-frequency banking environments. Leveraging *XGBoost* with *SMOTE* balancing, it detects fraudulent transactions with *99.94% accuracy* in under 15ms.
+AI-driven financial fraud detection system with:
+- Streamlit analyst dashboard
+- XGBoost model inference
+- Forensic PDF report generation
+- Android APK wrapper for mobile access to the live system
 
----
+## Features
+- Real-time fraud transaction simulation and scoring
+- Interactive forensics dashboard and network explorer
+- Audit log tracking
+- Fraud report PDF download
+- Android app (`finguard-mobile.apk`) linked to the live FinGuard deployment
 
-## 🚀 Key Features
-
-| Feature | Description |
-| :--- | :--- |
-| *🧠 Neural Engine* | XGBoost Classifier trained on 284k+ real European banking transactions. |
-| *⚡ Live Scanner* | Real-time packet analysis simulating a banking API gateway. |
-| *📄 Auto-Reporting* | Generates forensic *PDF Reports* for flagged transactions automatically. |
-| *📊 3D Forensics* | Interactive 3D PCA visualization of fraud clusters in vector space. |
-| *🔐 Enterprise Security* | Simulated Login System, Audit Logging, and AES-256 styled architecture. |
-
----
-
-## 🛠 Installation & Setup
-
-### Prerequisites
-* Python 3.8+
-* Pip Package Manager
-
-### Quick Start
-1.  *Clone the Repository*
-    bash
-    git clone [https://github.com/shiroonigami23-ui/Bank-Security.git](https://github.com/shiroonigami23-ui/Bank-Security.git)
-    cd Bank-Security
-    
-
-2.  *Install Dependencies*
-    bash
-    pip install -r requirements.txt
-    
-
-3.  *Run the System*
-    * *Windows:* Double-click FinGuard_Launcher.bat
-    * *Terminal:* python -m streamlit run main.py
-
----
-
-## 📂 Project Structure
-
+## Project Structure
 ```text
-FinGuard_Enterprise/
-├── main.py                  # Application Entry Point
-├── style.css                # Custom CSS (Glassmorphism UI)
-├── modules/                 # Core Logic Modules
-│   ├── data_loader.py       # Data Pipeline & Auto-Merge
-│   ├── ui_components.py     # UI Widgets & Lottie Animations
-│   └── pdf_generator.py     # Forensic PDF Engine
-├── assets/                  # Static Assets
-└── fraud_model_xg.pkl       # Serialized Machine Learning Model
+Bank-Security/
+├── main.py
+├── modules/
+│   ├── data_loader.py
+│   ├── pdf_generator.py
+│   ├── risk_calculator.py
+│   └── ui_components.py
+├── android/
+│   └── app/...
+├── fraud_model_xg.pkl
+├── requirements.txt
+└── .github/workflows/android-release.yml
+```
+
+## Setup (Python App)
+1. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+2. Run:
+```bash
+python -m streamlit run main.py
+```
+or use:
+```bash
+FinGuard_Launcher.bat
+```
+
+## Dataset Handling
+- Large CSV datasets are intentionally excluded from version control.
+- If CSVs are absent, the app now uses synthetic fallback data for demo continuity.
+- Model file `fraud_model_xg.pkl` remains part of the repo for inference.
+
+## Android APK
+- Source: `android/`
+- Build output in release: `finguard-mobile.apk`
+- The APK opens the existing live deployment:
+  - https://kaks-bank-security.streamlit.app
+
+## Release Automation
+- Tag push `v*` triggers Android build workflow:
+  - Builds APK
+  - Publishes GitHub Release asset
+
+## License
+MIT

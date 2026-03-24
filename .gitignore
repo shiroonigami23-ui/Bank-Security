@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.streamlit/
+venv/
+.venv/
+dist/
+build/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+creditcard_part1.csv
+creditcard_part2.csv

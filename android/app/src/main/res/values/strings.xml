@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FinGuard Mobile</string>
+    <string name="error_loading">Unable to load FinGuard. Check your internet connection.</string>
+    <string name="retry">Retry</string>
+</resources>
