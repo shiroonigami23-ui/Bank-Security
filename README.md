@@ -1,72 +1,182 @@
-# FinGuard Enterprise - Bank Security
+<div align="center">
 
-![Version](https://img.shields.io/badge/version-4.1.0-blue?style=for-the-badge)
-![Python](https://img.shields.io/badge/python-3.10+-yellow?style=for-the-badge&logo=python)
-![Android](https://img.shields.io/badge/android-apk-success?style=for-the-badge&logo=android)
-![Streamlit](https://img.shields.io/badge/streamlit-live-red?style=for-the-badge&logo=streamlit)
-![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
+<img src="assets/forensics-dashboard.png" alt="FinGuard Enterprise" width="100%">
 
-[![Live App](https://img.shields.io/badge/Live%20Demo-kaks--bank--security.streamlit.app-red?style=for-the-badge)](https://kaks-bank-security.streamlit.app)
-[![Download APK](https://img.shields.io/badge/Download-APK-3ddc84?style=for-the-badge&logo=android)](https://github.com/shiroonigami23-ui/Bank-Security/releases/latest/download/finguard-mobile.apk)
+<sub>Real screenshot — Forensics Dashboard (alerts feed, risk heat-map, key metrics)</sub>
 
-AI-driven financial fraud detection system with:
-- Streamlit analyst dashboard
-- XGBoost model inference
-- Forensic PDF report generation
-- Independent Android APK with offline transaction risk analysis
+# 🏦 FinGuard Enterprise
 
-## Features
-- Real-time fraud transaction simulation and scoring
-- Interactive forensics dashboard and network explorer
-- Audit log tracking
-- Fraud report PDF download
-- Independent Android app (`finguard-mobile.apk`) with native, offline fraud scoring UI
+### AI fraud-detection command centre — XGBoost scoring, forensics dashboard, network explorer, PDF reports
 
-## Project Structure
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white) ![xgboost](https://img.shields.io/badge/xgboost-555555?style=for-the-badge) ![scikit--learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white) ![pandas](https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white) ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE) ![Last commit](https://img.shields.io/github/last-commit/shiroonigami23-ui/Bank-Security?style=flat-square) ![Repo size](https://img.shields.io/github/repo-size/shiroonigami23-ui/Bank-Security?style=flat-square) ![Top language](https://img.shields.io/github/languages/top/shiroonigami23-ui/Bank-Security?style=flat-square) ![Status](https://img.shields.io/badge/status-v4.1.0-blueviolet?style=flat-square)
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/shiroonigami23-ui/Bank-Security?quickstart=1) [![Download ZIP](https://img.shields.io/badge/Download-ZIP-2ea44f?style=flat-square&logo=github)](https://github.com/shiroonigami23-ui/Bank-Security/archive/refs/heads/main.zip)
+
+[**🚀 Live Demo**](https://kaks-bank-security.streamlit.app) · [**Overview**](#-overview) · [**Features**](#-features) · [**Architecture**](#-architecture) · [**Getting Started**](#-getting-started) · [**Roadmap**](#-roadmap)
+
+</div>
+
+---
+
+## 📸 Preview
+
+<p align="center"><img src="assets/network-explorer.png" alt="FinGuard Enterprise preview" width="85%"></p>
+
+## 📖 Overview
+
+**FinGuard Enterprise** is an analyst-facing fraud-detection system for banking transactions. An **XGBoost** model trained on
+the credit-card fraud dataset scores transactions in real time; analysts work from a **Streamlit** command centre with a
+**live scanner**, a **forensics dashboard** (alerts feed, risk heat-map, risk-over-time, key metrics), a **network explorer**
+that visualises multi-hop relationships between accounts, and an **audit log**. Any case can be exported as a
+**forensic PDF report**, and an independent **Android app** performs offline transaction-risk analysis.
+
+### ✨ Highlights
+
+- **XGBoost** fraud scoring (`fraud_model_xg.pkl`)
+- **Network explorer** — multi-hop account relationships and cluster details
+- **Forensic PDFs** for case files
+- **Live demo** on Streamlit Cloud + offline Android APK
+
+## 🧩 Features
+
+| Feature | What it does |
+|---|---|
+| **Live scanner** | Simulated transaction stream scored by the model |
+| **Forensics dashboard** | Alerts feed, risk heat-map, risk-score timeline, false-positive rate, latency |
+| **Network explorer** | Graph of accounts with high-velocity and circular payment patterns |
+| **Audit log** | Every analyst action recorded |
+| **PDF reports** | `modules/pdf_generator.py` |
+| **Risk engine** | `modules/risk_calculator.py` |
+| **Role login** | Credential-gated access to the mainframe UI |
+| **Android app** | Native offline risk analysis (`android/`) |
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|---|---|
+| ML | XGBoost, scikit-learn, joblib |
+| UI | Streamlit, Plotly, streamlit-lottie |
+| Data | pandas, NumPy (credit-card fraud dataset, split into two CSVs) |
+| Reports | FPDF |
+| Mobile | Android |
+
+## 🏗 Architecture
+
+Streamlit pages sit on four modules — data loading, risk calculation, UI components and PDF generation.
+
+```mermaid
+flowchart LR
+  CSV[(creditcard_part1/2.csv)] --> DL[data_loader]
+  DL --> RC[risk_calculator<br/>XGBoost model]
+  RC --> UI{Streamlit modules}
+  UI --> LS[Live Scanner]
+  UI --> FD[Forensics Dashboard]
+  UI --> NE[Network Explorer]
+  UI --> AL[Audit Log]
+  FD --> PDF[pdf_generator → forensic report]
+  APK[Android app] -.offline scoring.-> RC
+```
+
+➡️ Full design notes, data flow and design decisions: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
+
+## 📁 Project Structure
+
 ```text
 Bank-Security/
-├── main.py
-├── modules/
-│   ├── data_loader.py
-│   ├── pdf_generator.py
-│   ├── risk_calculator.py
-│   └── ui_components.py
-├── android/
-│   └── app/...
-├── fraud_model_xg.pkl
-├── requirements.txt
-└── .github/workflows/android-release.yml
+├── main.py                 # Streamlit app + login + module router
+├── modules/                # data_loader, risk_calculator, ui_components, pdf_generator
+├── fraud_model_xg.pkl      # trained XGBoost model
+├── creditcard_part1.csv · creditcard_part2.csv
+├── style.css
+├── android/                # offline Android app
+└── FinGuard_Launcher.bat   # Windows launcher
 ```
 
-## Setup (Python App)
-1. Install dependencies:
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.10+
+
+### 1. Get the code
+
+Pick whichever method suits you:
+
+| Method | Command |
+|---|---|
+| **HTTPS** | `git clone https://github.com/shiroonigami23-ui/Bank-Security.git` |
+| **SSH** | `git clone git@github.com:shiroonigami23-ui/Bank-Security.git` |
+| **GitHub CLI** | `gh repo clone shiroonigami23-ui/Bank-Security` |
+| **ZIP** | [Download](https://github.com/shiroonigami23-ui/Bank-Security/archive/refs/heads/main.zip) and extract |
+| **Codespaces** | [Open in browser](https://codespaces.new/shiroonigami23-ui/Bank-Security?quickstart=1) — zero local setup, dev container preconfigured |
+
+> 🔑 **Using SSH for the first time?** Generate a key with `ssh-keygen -t ed25519 -C "you@example.com"`, add the `.pub` contents at **GitHub → Settings → SSH and GPG keys**, then test with `ssh -T git@github.com`.
+
+### 2. Install & set up
+
 ```bash
+cd Bank-Security
 pip install -r requirements.txt
 ```
-2. Run:
+
+### 3. Run
+
 ```bash
-python -m streamlit run main.py
+streamlit run main.py      # http://localhost:8501
 ```
-or use:
-```bash
-FinGuard_Launcher.bat
-```
+Windows users can double-click `FinGuard_Launcher.bat`.
 
-## Dataset Handling
-- CSV datasets are included in version control for full local reproducibility.
-- If CSVs are absent, the app still supports synthetic fallback demo data.
-- Model file `fraud_model_xg.pkl` remains part of the repo for inference.
+## 🗺 Roadmap
 
-## Android APK
-- Source: `android/`
-- Build output in release: `finguard-mobile.apk`
-- The APK runs independently from Streamlit with local risk-score calculations.
-- Streamlit workflow remains unchanged and continues to run from `main.py`.
+**v4.1 — Current (done)**
 
-## Release Automation
-- Tag push `v*` triggers Android build workflow:
-  - Builds APK
-  - Publishes GitHub Release asset
+- [x] XGBoost scoring, 4 analyst modules, PDF reports
+- [x] Streamlit Cloud deployment and Android APK
 
-## License
-MIT
+**v4.2 — Security hardening**
+
+- [ ] Move credentials to hashed secrets / OAuth instead of in-code demo users
+- [ ] Role-based permissions per module
+- [ ] Persist audit log to a database
+
+**v5.0 — Smarter detection**
+
+- [ ] SHAP explanations per alert
+- [ ] Graph-based features (GNN) from the network explorer
+- [ ] Streaming ingestion (Kafka) and drift monitoring
+
+➡️ Detailed plan, milestones and long-term vision: **[docs/ROADMAP.md](docs/ROADMAP.md)**
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m "feat: add amazing feature"`
+4. Push the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request against `main`
+
+Check the [issues page](https://github.com/shiroonigami23-ui/Bank-Security/issues) and the [roadmap](docs/ROADMAP.md) for ideas on where to help.
+
+## 📜 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for the release history.
+
+## 📄 License
+
+Distributed under the **MIT** license. See [LICENSE](LICENSE) for details.
+
+## 👤 Author
+
+**Aryan Singh Chandel** (Shiro)
+
+[![GitHub](https://img.shields.io/badge/GitHub-shiroonigami23--ui-181717?style=flat-square&logo=github)](https://github.com/shiroonigami23-ui)
+
+<div align="center">
+
+⭐ **If you find this project useful, consider giving it a star!** ⭐
+
+</div>
