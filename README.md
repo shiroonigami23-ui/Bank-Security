@@ -2,8 +2,6 @@
 
 <img src="assets/forensics-dashboard.png" alt="FinGuard Enterprise" width="100%">
 
-<sub>Real screenshot — Forensics Dashboard (alerts feed, risk heat-map, key metrics)</sub>
-
 # 🏦 FinGuard Enterprise
 
 ### AI fraud-detection command centre — XGBoost scoring, forensics dashboard, network explorer, PDF reports
